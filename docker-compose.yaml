@@ -1,0 +1,14 @@
+services:
+  mysql:
+    image: mysql:latest
+    restart: no
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin@00154abS
+      - MYSQL_DATABASE=forex4you_db
+
+volumes:
+  mysql_data:
