@@ -1,4 +1,4 @@
 export enum WalletEnum {
-	Ethereum = "eip155",
-	Usdt = "eip155",
+	Ethereum = "eip155:1",
+	Usdt = "eip155:1",
 }

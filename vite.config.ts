@@ -1,8 +1,17 @@
+import path from "node:path";
 import adonisjs from "@adonisjs/vite/client";
+import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-
 export default defineConfig({
+	// build: {
+	// 	rollupOptions: {
+	// 		external: ["public/_assets/**"],
+	// 	},
+	// },
 	plugins: [
+		react(),
+		tailwindcss(),
 		adonisjs({
 			/**
 			 * Entrypoints of your application. Each entrypoint will
@@ -10,7 +19,7 @@ export default defineConfig({
 			 */
 			entrypoints: [
 				"resources/css/app.css",
-				"resources/js/app.js",
+				"resources/js/main.tsx",
 				"resources/js/script.ts",
 			],
 
@@ -20,4 +29,9 @@ export default defineConfig({
 			reload: ["resources/views/**/*.edge"],
 		}),
 	],
+	resolve: {
+		alias: {
+			"@": path.resolve(__dirname, "./resources/js"),
+		},
+	},
 });

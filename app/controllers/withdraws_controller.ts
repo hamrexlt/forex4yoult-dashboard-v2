@@ -1,11 +1,14 @@
 import type { HttpContext } from "@adonisjs/core/http";
+import db from "@adonisjs/lucid/services/db";
 import mail from "@adonisjs/mail/services/main";
 import { rules, schema } from "@adonisjs/validator";
 import WithdrawAlert from "#mails/withdraw_email_notification";
 import Transaction from "#models/transaction";
+import Wallet from "#models/wallet";
 
 export default class WithdrawsController {
-	public async show({ view, auth }: HttpContext) {
+	public async show({ view, auth, request, response }: HttpContext) {
+		// response.clearCookie("direct-withdraw-data");
 		await auth.user?.load("transactions");
 		// let withdraws = auth.user?.transactions.filter(
 		//   (v) => v.transactionType == "withdrawal".toUpperCase()
@@ -16,7 +19,101 @@ export default class WithdrawsController {
 		});
 	}
 
-	public async directWithdraw({ view, auth }: HttpContext) {
+	public async directWithDraw({
+		response,
+		session,
+		request,
+		auth,
+	}: HttpContext) {
+		const reqStage = request.input("stage");
+
+		if (!reqStage) {
+			return response
+				.redirect()
+				.toRoute(
+					"withdraw.show-direct",
+					{ username: auth.user?.userName },
+					{ qs: { tab: "direct" } },
+				);
+		}
+
+		try {
+			if (reqStage == 1) {
+				const payload = await request.validate({
+					schema: schema.create({
+						amount: schema.number([
+							rules.trim(),
+							rules.required(),
+							rules.unsigned(),
+							rules.range(1, 1000000),
+						]),
+						// coin_type: schema.string([rules.trim(), rules.required()]),
+					}),
+				});
+				const wallets = await db
+					.from("wallets")
+					.select("wallet_address", "block_chain")
+					.exec();
+				if (wallets.length === 0) {
+					session.flash("form.error", "Operation not supported at the moment");
+					return response
+						.redirect()
+						.toRoute(
+							"withdraw.show",
+							{ username: auth.user?.userName },
+							{ qs: { tab: "direct" } },
+						);
+				}
+				session.flashAll();
+				return response
+					.clearCookie("direct-withdraw-data")
+					.plainCookie(
+						"direct-withdraw-data",
+						JSON.stringify({
+							amount: payload.amount,
+							wallets,
+						}),
+						{ encode: false, httpOnly: false },
+					)
+					.redirect()
+					.toRoute(
+						"withdraw.show-direct",
+						{ username: auth.user?.userName },
+						{ qs: { tab: "direct" } },
+					);
+			}
+		} catch (error) {
+			session.flashAll();
+			if (error.messages) {
+				session.flash(
+					"form.error",
+					(Object.values(error.messages)[0] as Array<string>)[0],
+				);
+			} else {
+				session.flash("form.error", "Internal Server Error");
+			}
+			console.log(error);
+			response.redirect().withQs({ tab: "direct" }).back();
+		}
+	}
+
+	public async directWithdrawShow({
+		view,
+		auth,
+		request,
+		response,
+		session,
+	}: HttpContext) {
+		if (!request.plainCookie("direct-withdraw-data", { encoded: false })) {
+			session.flash("form.error", "You've not requested a direct withdraw");
+			return response
+				.redirect()
+				.toRoute(
+					"withdraw.show",
+					{ username: auth.user?.userName },
+					{ qs: { tab: "direct" } },
+				);
+		}
 		await auth.user?.load("transactions");
 		// let withdraws = auth.user?.transactions.filter(
 		//   (v) => v.transactionType == "withdrawal".toUpperCase()
@@ -75,13 +172,21 @@ export default class WithdrawsController {
 				);
 				return response
 					.redirect()
-					.toRoute("withdraw.show", { username: auth.user?.userName });
+					.toRoute(
+						"withdraw.show",
+						{ username: auth.user?.userName },
+						{ qs: { tab: "address" } },
+					);
 			}
 			session.flashAll();
 			session.flash("form.error", "Action not allowed, you're not activated");
 			return response
 				.redirect()
-				.toRoute("withdraw.show", { username: auth.user?.userName });
+				.toRoute(
+					"withdraw.show",
+					{ username: auth.user?.userName },
+					{ qs: { tab: "address" } },
+				);
 		} catch (error) {
 			session.flashAll();
 			if (error.messages) {
@@ -93,7 +198,7 @@ export default class WithdrawsController {
 				session.flash("form.error", "Internal Server Error");
 			}
 			console.log(error);
-			response.redirect().back();
+			response.redirect().withQs({ tab: "address" }).back();
 		}
 	}
 
@@ -154,13 +259,21 @@ export default class WithdrawsController {
 				session.flash("form.success", "Withdraw request has been submitted");
 				return response
 					.redirect()
-					.toRoute("withdraw.show", { username: auth.user?.userName });
+					.toRoute(
+						"withdraw.show",
+						{ username: auth.user?.userName },
+						{ qs: { tab: "key" } },
+					);
 			}
 			session.flashAll();
 			session.flash("form.error", "Action not allowed, you're not activated");
 			return response
 				.redirect()
-				.toRoute("withdraw.show", { username: auth.user?.userName });
+				.toRoute(
+					"withdraw.show",
+					{ username: auth.user?.userName },
+					{ qs: { tab: "key" } },
+				);
 		} catch (error) {
 			session.flashAll();
 			if (error.messages) {
@@ -172,7 +285,7 @@ export default class WithdrawsController {
 				session.flash("form.error", "Internal Server Error");
 			}
 			console.log(error);
-			response.redirect().back();
+			response.redirect().withQs({ tab: "key" }).back();
 		}
 	}
 }

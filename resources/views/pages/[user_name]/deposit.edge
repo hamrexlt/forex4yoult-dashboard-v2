@@ -156,7 +156,7 @@
               <div class="row">
                 <div class="col-xl-7">
                   <div class="">
-                    <form method="post" action="/{{user_name}}/deposit"
+                    <form method="post" action="/~/{{user_name}}/deposit"
                     class="needs-validation" novalidate>
                     {{csrfField()}}
                     
@@ -319,7 +319,7 @@
         placeholder: "Please select coin type",
         // allowClear: true,
         })
-        $.getJSON('/{{user_name}}/wallets', (data) => {
+        $.getJSON('/~/{{user_name}}/wallets', (data) => {
         $(".select-coin-type").append("<option></option>")
           if (data.length > 0) {
           // let items2 = Object.values(data.listings)

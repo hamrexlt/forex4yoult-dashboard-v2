@@ -1,8 +1,15 @@
 @layout.main({title:'Withdraw'})
+
 @slot('head')
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 @endslot
 @slot('body')
+  @let(
+  tab_key = request.input('tab') === 'key' || request.input('tab') === undefined  ? 'active' : '')
+  @let(
+  tab_address = request.input('tab') === 'address'  ? 'active' : '')
+  @let(
+  tab_direct = request.input('tab') === 'direct' ? 'active' : '')
   <div class="container-fluid">
     <!-- start page title -->
     <div class="row">
@@ -92,19 +99,19 @@
           <!-- Nav tabs -->
           <ul class="nav nav-tabs nav-justified mb-3" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" data-bs-toggle="tab" href="#key" role="tab"
+              <a class="nav-link {{tab_key}}" data-bs-toggle="tab" href="#key" role="tab"
               aria-selected="false">
               Key
                 </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" data-bs-toggle="tab" href="#address" role="tab"
+              <a class="nav-link {{tab_address}}" data-bs-toggle="tab" href="#address" role="tab"
               aria-selected="false">
               Address
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" data-bs-toggle="tab" href="#direct" role="tab"
+              <a class="nav-link {{tab_direct}}" data-bs-toggle="tab" href="#direct" role="tab"
               aria-selected="false">
               Direct
               </a>
@@ -113,11 +120,11 @@
           <!-- Tab panes -->
           <div class="tab-content  text-muted">
             {{-- --}}
-            <div class="tab-pane active" id="key" role="tabpanel">
+            <div class="tab-pane {{tab_key}}" id="key" role="tabpanel">
               <div class="row">
                 <div class="col-xl-7">
                   <div class="">
-                    <form method="post" action="/{{user_name}}/withdraw"
+                    <form method="post" action="/~/{{user_name}}/withdraw"
                     class="needs-validation" novalidate>
                     {{csrfField()}}
                     
@@ -173,11 +180,11 @@
               </div>
             </div>
             {{-- --}}
-            <div class="tab-pane" id="address" role="tabpanel">
+            <div class="tab-pane {{tab_address}}" id="address" role="tabpanel">
               <div class="row">
                 <div class="col-xl-7">
                   <div class="">
-                    <form method="post" action="/{{user_name}}/withdraw/by/address"
+                    <form method="post" action="/~/{{user_name}}/withdraw/by/address"
                     class="needs-validation" novalidate>
                     
                     {{csrfField()}}
@@ -237,14 +244,14 @@
               </div>
             </div>
             {{-- Direct --}}
-            <div class="tab-pane" id="direct" role="tabpanel">
+            <div class="tab-pane {{tab_direct}}" id="direct" role="tabpanel">
               <div class="row">
                 <div class="col-xl-7">
                   <div class="">
-                    <form name="withdraw-direct" class="needs-validation"
-                    action="{{route('withdraw.show-direct', {username: user_name})}}"
+                    <form name="withdraw-direct" method="post" class="needs-validation"
+                    action="{{route('withdraw.direct', {username: user_name},{qs: {stage: 1}})}}"
                     novalidate>
-                    
+                    {{csrfField()}}
                     
                     {{-- <div class="mb-3">
                       <label for="coin_type" class="form-label">Coin type
@@ -257,7 +264,7 @@
                       </div>
                     </div> --}}
                     
-                    {{-- <div class="mb-3">
+                    <div class="mb-3">
                       <label for="amount" class="form-label">Amount
                       </label>
                       <div class="input-group">
@@ -274,7 +281,7 @@
                       </div>
                     </div>
                     
-                    <div class="mb-3">
+                    {{--<div class="mb-3">
                       <label for="wallet_address" class="form-label">Wallet Adress
                       </label>
                       <div class="input-group">
@@ -390,13 +397,13 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.22.0/dist/jquery.validate.min.js"></script>
       <!--select2 cdn-->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-      
+      cons
       <script defer>
         $(document).ready(async function () {
         $('.select-wallet-type').select2({
         placeholder: "Please select coin type",
         ajax: {
-        url: '/{{user_name}}/coins',
+        url: '/~/{{user_name}}/coins',
         data: function (params) {
         var query = {
         search: params.term,
@@ -425,7 +432,7 @@
         })
         
         
-        $.getJSON('/{{user_name}}/wallets', (data) => {
+        $.getJSON('/~/{{user_name}}/wallets', (data) => {
         console.log(data)
         $(".select-coin-type").append("<option></option>")
           if (data.length > 0) {

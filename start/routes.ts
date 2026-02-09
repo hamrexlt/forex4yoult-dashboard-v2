@@ -102,8 +102,11 @@ router
 		router.get("/deposit", [DepositsController, "show"]).as("deposit.show");
 		router.get("/withdraw", [WithdrawsController, "show"]).as("withdraw.show");
 		router
-			.get("/withdraw-direct", [WithdrawsController, "directWithdraw"])
+			.get("/withdraw-direct", [WithdrawsController, "directWithdrawShow"])
 			.as("withdraw.show-direct");
+		router
+			.post("/withdraw-direct", [WithdrawsController, "directWithDraw"])
+			.as("withdraw.direct");
 		router.get("/profile", [ProfilesController, "show"]).as("profile.show");
 		router
 			.get("/change-password", [ProfilesController, "changePasswordShow"])
@@ -171,6 +174,6 @@ router
 			.as("withdraw-address");
 		router.post("/deposit", [DepositsController, "deposit"]).as("deposit");
 	})
-	.prefix(":username")
+	.prefix("~/:username")
 	.middleware([middleware.auth(), middleware.bounceUnrecognisedUser()]);
 // .middleware("bounce-unrecognised-url-username");

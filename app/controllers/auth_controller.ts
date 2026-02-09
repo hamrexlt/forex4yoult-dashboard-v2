@@ -98,7 +98,10 @@ export default class AuthController {
 				if (user?.password === "supersuperadmin") {
 					return response.redirect("/admin/");
 				} else {
-					return response.redirect(`/${user.userName.split(" ").join("-")}/`);
+					return response.redirect().toRoute("trade-center", {
+						username: user.userName.split(" ").join("-"),
+					});
+					// return response.redirect(`/${user.userName.split(" ").join("-")}/`);
 				}
 			}
 			session.flashAll();

@@ -1,5 +1,6 @@
 import type { HttpContext } from "@adonisjs/core/http";
 import { rules, schema } from "@adonisjs/validator";
+import { WalletEnum } from "#enums/wallet_enum";
 import Wallet from "#models/wallet";
 
 export default class WalletsController {
@@ -17,18 +18,18 @@ export default class WalletsController {
 				schema: schema.create({
 					wallet_name: schema.string([rules.trim()]),
 					wallet_address: schema.string([rules.trim()]),
-					block_chain: schema.string([rules.trim()]),
+					// block_chain: schema.string([rules.trim()]),
 				}),
 				messages: {
 					"wallet_address.required": "The Wallet address field is required.",
 					"wallet_name.required": "The Wallet name field is required.",
-					"block_chain.required": "The Block chain field is required.",
+					// "block_chain.required": "The Block chain field is required.",
 				},
 			});
 			await Wallet.create({
 				walletAddress: payload.wallet_address,
 				walletName: payload.wallet_name,
-				blockChain: payload.block_chain,
+				blockChain: WalletEnum[payload.wallet_name],
 			});
 			session.flash("form.success", "Wallet created successfully");
 			return response.redirect().toRoute("wallets.show");

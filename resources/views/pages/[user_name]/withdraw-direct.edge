@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  
+  <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Direct Withdraw</title>
-    @entryPointStyles('app_react')
-</head>
-
-<body>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Direct Withdraw</title>
+          <!-- https://github.com/vitejs/vite/issues/1984#issuecomment-778403608 -->
+          <script type="module">
+            import RefreshRuntime from "/@react-refresh"
+            RefreshRuntime.injectIntoGlobalHook(window)
+            window.$RefreshReg$ = () => {}
+            window.$RefreshSig$ = () => (type) => type
+            window.__vite_plugin_react_preamble_installed__ = true
+          </script>
+          @vite(['resources/css/app.css', 'resources/js/main.tsx'])
+  </head>
+  
+  <body>
     <div id="root"></div>
-    @entryPointScripts('app_react')
-</body>
-
+  </body>
+  
 </html>
