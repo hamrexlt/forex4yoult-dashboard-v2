@@ -3,11 +3,13 @@
 # exit on error
 set -o errexit
 
-npm i --legacy-peer-deps
+# npm i --legacy-peer-deps
+bun install
 node ace build --ignore-ts-errors --production --assets
 cd build
 echo "RUNNING CI..."
-npm ci --production --legacy-peer-deps
+# npm ci --legacy-peer-deps
+bun install --production
 echo "RUNNING MIGRATION"
 # ENV_PATH=/etc/secrets/.env
 # node ace migration:run --force
