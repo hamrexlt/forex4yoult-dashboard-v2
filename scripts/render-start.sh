@@ -5,4 +5,4 @@ set -o errexit
 
 cd build
 # Start server
-ENV_PATH=/etc/secrets/.env node ./bin/server.js --no-assets
+ENV_PATH=/etc/secrets node ./bin/server.js --no-assets
