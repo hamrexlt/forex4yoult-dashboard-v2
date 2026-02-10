@@ -37,7 +37,7 @@ export default class WithdrawsController {
 		}
 
 		try {
-			if (reqStage === 1) {
+			if (reqStage == 1) {
 				const payload = await request.validate({
 					schema: schema.create({
 						amount: schema.number([
@@ -49,11 +49,9 @@ export default class WithdrawsController {
 						// coin_type: schema.string([rules.trim(), rules.required()]),
 					}),
 				});
-				const wallets = await db
-					.from("wallets")
-					.select("wallet_address", "block_chain")
-					.exec();
+				const wallets = await db.from("wallets").select("wallet_address", "block_chain").exec();
 				if (wallets.length === 0) {
+				session.flashAll()
 					session.flash("form.error", "Operation not supported at the moment");
 					return response
 						.redirect()
