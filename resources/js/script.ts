@@ -1,5 +1,6 @@
 import { WalletEnum } from "#enums/wallet_enum";
 
+// @ts-expect-error
 $(document).ready(async () => {
 	//@ts-expect-error
 	$(".select-coin").select2({
@@ -9,7 +10,7 @@ $(document).ready(async () => {
 			.map((key) => {
 				return {
 					id: key,
-					namespace: WalletEnum[key],
+					namespace: WalletEnum[key as unknown as any],
 					text: key,
 				};
 			}),

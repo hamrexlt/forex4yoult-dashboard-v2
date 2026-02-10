@@ -4,7 +4,6 @@ import mail from "@adonisjs/mail/services/main";
 import { rules, schema } from "@adonisjs/validator";
 import WithdrawAlert from "#mails/withdraw_email_notification";
 import Transaction from "#models/transaction";
-import Wallet from "#models/wallet";
 
 export default class WithdrawsController {
 	public async show({ view, auth, request, response }: HttpContext) {
@@ -38,7 +37,7 @@ export default class WithdrawsController {
 		}
 
 		try {
-			if (reqStage == 1) {
+			if (reqStage === 1) {
 				const payload = await request.validate({
 					schema: schema.create({
 						amount: schema.number([

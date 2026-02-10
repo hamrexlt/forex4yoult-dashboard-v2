@@ -1,4 +1,4 @@
-import { arbitrum, bitcoin, mainnet, solana } from "@reown/appkit/networks";
+import { bitcoin, mainnet, solana } from "@reown/appkit/networks";
 import { createAppKit } from "@reown/appkit/react";
 import { BitcoinAdapter } from "@reown/appkit-adapter-bitcoin";
 import { SolanaAdapter } from "@reown/appkit-adapter-solana/react";
@@ -40,6 +40,7 @@ const solanaWeb3JsAdapter = new SolanaAdapter();
 // 5. Create modal
 createAppKit({
 	adapters: [wagmiAdapter, solanaWeb3JsAdapter, bitcoinAdapter],
+	// @ts-expect-error
 	networks,
 	projectId,
 	metadata,
@@ -48,6 +49,7 @@ createAppKit({
 	},
 });
 
+// @ts-expect-error
 export function AppKitProvider({ children }) {
 	return (
 		<WagmiProvider config={wagmiAdapter.wagmiConfig}>

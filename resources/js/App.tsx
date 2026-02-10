@@ -1,11 +1,4 @@
-import {
-	AppKitButton,
-	AppKitConnectButton,
-	AppKitNetworkButton,
-	useAppKit,
-	useAppKitAccount,
-} from "@reown/appkit/react";
-import { useAppKitWallet } from "@reown/appkit-wallet-button/react";
+import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import {
 	ChevronLeft,
 	LockIcon,
@@ -19,6 +12,7 @@ import Header from "./components/shared/header.tsx";
 import { Button } from "./components/ui/button.tsx";
 import { getCookie } from "./lib/cookie.ts";
 
+// @ts-expect-error
 const data = JSON.parse(getCookie("direct-withdraw-data"));
 const withdrawalAmount = new Intl.NumberFormat("en-US", {
 	style: "currency",

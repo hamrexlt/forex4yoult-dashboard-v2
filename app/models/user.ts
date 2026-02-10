@@ -7,7 +7,7 @@ import type { HasMany } from "@adonisjs/lucid/types/relations";
 import type { DateTime } from "luxon";
 import Transaction from "./transaction.js";
 
-const AuthFinder = withAuthFinder(() => hash.use("scrypt"), {
+const _AuthFinder = withAuthFinder(() => hash.use("scrypt"), {
 	uids: ["email"],
 	passwordColumnName: "password",
 });

@@ -320,7 +320,6 @@ export default class AdminController {
 			});
 			const user = await User.find(payload.user_id);
 			// let newUser = user?.email
-			// biome-ignore lint/style/noNonNullAssertion: <explanation>
 			await mail.send(
 				new EmailClient(user!.email, payload.subject, payload.body),
 			);

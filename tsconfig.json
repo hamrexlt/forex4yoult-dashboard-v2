@@ -10,11 +10,23 @@
 		"allowImportingTsExtensions": true,
 		"noEmit": true,
 		"skipLibCheck": true,
-		"baseUrl": "./",
+		// "baseUrl": "./",
+		"strict": false,
+		"strictPropertyInitialization": false,
+		"noImplicitAny": false,
+		"strictFunctionTypes": false,
+		"noUnusedParameters": false,
+		"noUnusedLocals": false,
 		"verbatimModuleSyntax": true,
-		"moduleResolution": "bundler",
+		// "moduleResolution": "bundler",
+		// "module": "esnext",
 		"paths": {
-			"@/*": ["./resources/js/*"]
+			// "@/*": ["./resources/js/*"]
+			// "@/*": ["./resources/js/*"]
+			"@/*": ["./resources/js/*"],
+			// "@/lib/*": ["./resources/js/lib/*"],
+			// "@/components/*": ["./resources/js/components/*"]
 		}
-	}
+	},
+	"exclude": ["./resources/js/**/*"]
 }

@@ -1,16 +1,15 @@
 import {
 	AppKitButton,
 	AppKitNetworkButton,
-	useAppKit,
-	useAppKitAccount,
+	// useAppKitAccount,
 } from "@reown/appkit/react";
-import type { Wallet } from "@reown/appkit-wallet-button";
-import { Wallet2Icon } from "lucide-react";
-import { Button } from "../ui/button";
+// import type { Wallet } from "@reown/appkit-wallet-button";
+// import { Wallet2Icon } from "lucide-react";
+// import { Button } from "../ui/button";
 
 export default function Header() {
-	const { isConnected } = useAppKitAccount({ namespace: "eip155" });
-	// const { open, close } = useAppKit();
+	// const { isConnected } = useAppKitAccount({ namespace: "eip155" });
+	// // const { open, close } = useAppKit();
 	return (
 		<header className="w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 px-6 py-4">
 			<div className="max-w-7xl mx-auto flex items-center justify-between">
