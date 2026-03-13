@@ -30,8 +30,7 @@ const App = () => {
 			evmAccount.isConnected || solAccount.isConnected || btcAccount.isConnected
 		);
 	}, [evmAccount.isConnected, solAccount.isConnected, btcAccount.isConnected]);
-	const { open } = useAppKit();
-	console.log(solAccount.allAccounts);
+	// console.log(solAccount.allAccounts);
 	return (
 		<>
 			<Header />
@@ -98,16 +97,7 @@ const App = () => {
 								</div>
 							</div>
 							<div className="space-y-4 pt-2">
-								{!isConnected && (
-									<Button
-										size={"lg"}
-										onClick={async () => await open()}
-										className="w-full py-3 shadow-xl text-lg hover:bg-primary/90"
-									>
-										<WalletIcon />
-										Connect Wallet
-									</Button>
-								)}
+
 								<button
 									type="button"
 									disabled={!isConnected}
